@@ -1,39 +1,74 @@
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand, Row, Col, Jumbotron, Button, InputGroup, FormGroup, Input, InputGroupAddon } from 'reactstrap';
+import { 
+  Container, 
+  Navbar, 
+  NavbarBrand, 
+  Row, 
+  Col, FormGroup, Jumbotron, Button, InputGroup, Input, InputGroupAddon 
+} from 'reactstrap';
+
+import Weather from './Weather';
 
 import './App.css';
-
-const options = [
-  'Toronto',
-  'Vancouver',
-  'Montreal',
-  'Halifax'
-];
 
 class App extends Component {
   constructor(props) {
     super(props)
   
     this.state = {
-      newCity: '',
-      city: null
+      weather: null,
+      cityList: [],
+      newCityName: ''
     }
   }
 
-  handleNewCityChange = (e) => {
-    this.setState({ newCity: e.target.value });
-    console.log(e.target.value);
-  }
+  handleInputChange = (e) => {
+    this.setState({ newCityName: e.target.value });
+  };
 
   handleChangeCity = (e) => {
-    this.setState({ city: e.target.value });
-    console.log(e.target.value);
+    this.getWeather(e.target.value);
+  };
+
+  handleAddCity = () => {
+    fetch('/api/cities', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ city: this.state.newCityName })
+    })
+    .then(res => res.json())
+    .then(res => {
+      this.getCityList();
+      this.setState({ newCityName: '' });
+    });
+  };
+
+  getCityList = () => {
+    fetch('/api/cities')
+    .then(res => res.json())
+    .then(res => {
+      var cityList = res.map(r => r.city_name);
+      this.setState({ cityList });
+    });
+  };
+
+  getWeather = (city) => {
+    fetch(`/api/weather/${city}`)
+    .then(res => res.json())
+    .then(weather => {
+      console.log(weather);
+      this.setState({ weather });
+    });
+  }
+
+  componentDidMount () {
+    this.getCityList();
   }
   
-  render() {
+  render () {
     return (
-      <div style={{ textAlign: 'center' }}>
-        <Navbar color="dark" dark>
+      <Container fluid className="centered">
+        <Navbar dark color="dark">
           <NavbarBrand href="/">MyWeather</NavbarBrand>
         </Navbar>
         <Row>
@@ -41,42 +76,34 @@ class App extends Component {
             <Jumbotron>
               <h1 className="display-3">MyWeather</h1>
               <p className="lead">The current weather for your favorite cities!</p>
-
-                <InputGroup style={{ width: '275px', margin: '0 auto' }}>
-                  <Input 
-                    value={this.state.newCity}
-                    onChange={this.handleNewCityChange}
-                    placeholder="City name..." 
+                <InputGroup>
+                  <Input
+                    placeholder="New city name..."
+                    value={this.state.newCityName}
+                    onChange={this.handleInputChange}
                   />
                   <InputGroupAddon addonType="append">
-                    <Button color="primary">Add City</Button>
+                    <Button color="primary" onClick={this.handleAddCity}>Add City</Button>
                   </InputGroupAddon>
                 </InputGroup>
-
             </Jumbotron>
           </Col>
         </Row>
         <Row>
           <Col>
             <h1 className="display-5">Current Weather</h1>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <FormGroup style={{ width: '275px', margin: '0 auto' }}>
-              <Input type="select" onChange={this.handleCity}>
-              { options.length === 0 && <option>No cities added yet.</option> }
-              { options.map(option => <option key={option}>{option}</option>) }
+            <FormGroup>
+              <Input type="select" onChange={this.handleChangeCity}>
+              { this.state.cityList.length === 0 && <option>No cities added yet.</option> }
+              { this.state.cityList.length > 0 && <option>Select a city.</option> }
+              { this.state.cityList.map((city, i) => <option key={i}>{city}</option>) }
               </Input>
             </FormGroup>
           </Col>
         </Row>
-        <Row>
-          <Col>
-          
-          </Col>
-        </Row>
-      </div>
+
+        <Weather data={this.state.weather}/>
+      </Container>
     );
   }
 }

@@ -6,7 +6,7 @@ class Weather {
   static retrieveByCity (city, callback) {
 
     request({
-      uri: `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${API_KEY}`,
+      uri: `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${API_KEY}&units=imperial`,
       json: true
     }).then(function (res) {
       callback(res);
