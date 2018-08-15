@@ -13,7 +13,7 @@ import './App.css';
 
 class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   
     this.state = {
       weather: null,
@@ -101,7 +101,6 @@ class App extends Component {
             </FormGroup>
           </Col>
         </Row>
-
         <Weather data={this.state.weather}/>
       </Container>
     );
