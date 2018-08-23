@@ -76,16 +76,16 @@ class App extends Component {
             <Jumbotron>
               <h1 className="display-3">MyWeather</h1>
               <p className="lead">The current weather for your favorite cities!</p>
-                <InputGroup>
-                  <Input
-                    placeholder="New city name..."
-                    value={this.state.newCityName}
-                    onChange={this.handleInputChange}
-                  />
-                  <InputGroupAddon addonType="append">
-                    <Button color="primary" onClick={this.handleAddCity}>Add City</Button>
-                  </InputGroupAddon>
-                </InputGroup>
+              <InputGroup>
+                <Input
+                  placeholder="New city name..."
+                  value={this.state.newCityName}
+                  onChange={this.handleInputChange}
+                />
+                <InputGroupAddon addonType="append">
+                  <Button color="primary" onClick={this.handleAddCity}>Add City</Button>
+                </InputGroupAddon>
+              </InputGroup>
             </Jumbotron>
           </Col>
         </Row>
