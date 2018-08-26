@@ -12,7 +12,6 @@ import Weather from './Weather';
 import './App.css';
 
 class App extends Component {
-
   constructor(props) {
     super(props);
   
@@ -25,6 +24,10 @@ class App extends Component {
 
   handleInputChange = (e) => {
     this.setState({ newCityName: e.target.value });
+  };
+
+  handleChangeCity = (e) => {
+    this.getWeather(e.target.value);
   };
 
   handleAddCity = () => {
@@ -48,6 +51,14 @@ class App extends Component {
       this.setState({ cityList });
     });
   };
+
+  getWeather = (city) => {
+    fetch(`/api/weather/${city}`)
+    .then(res => res.json())
+    .then(weather => {
+      this.setState({ weather });
+    });
+  }
 
   componentDidMount () {
     this.getCityList();
@@ -75,11 +86,19 @@ class App extends Component {
                 </InputGroupAddon>
               </InputGroup>
             </Jumbotron>
-          
           </Col>
         </Row>
         <Row>
-          <Col></Col>
+          <Col>
+            <h1 className="display-5">Current Weather</h1>
+            <FormGroup>
+              <Input type="select" onChange={this.handleChangeCity}>
+              { this.state.cityList.length === 0 && <option>No cities added yet.</option> }
+              { this.state.cityList.length > 0 && <option>Select a city.</option> }
+              { this.state.cityList.map((city, i) => <option key={i}>{city}</option>) }
+              </Input>
+            </FormGroup>
+          </Col>
         </Row>
         <Weather />
       </Container>

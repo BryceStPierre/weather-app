@@ -56,7 +56,6 @@ class App extends Component {
     fetch(`/api/weather/${city}`)
     .then(res => res.json())
     .then(weather => {
-      console.log(weather);
       this.setState({ weather });
     });
   }
