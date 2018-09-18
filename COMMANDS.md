@@ -1,10 +1,10 @@
 `heroku login`
 
-`heroku create weather-app-test`
+`heroku create weather-app-bryce`
 
-`heroku addons:create heroku-postgresql:hobby-dev --name=weather-app-test-db`
+`heroku addons:create heroku-postgresql:hobby-dev --name=weather-test-db`
 
-`heroku addons:attach weather-app-test-db --app=weather-app-test`
+`heroku addons:attach weather-test-db --app=weather-app-bryce`
 
 `git push heroku master`
 
@@ -14,4 +14,4 @@
 
 `heroku logs --tail`
 
-`heroku pg:psql --app weather-app-test`
+`heroku pg:psql --app weather-app-bryce`
