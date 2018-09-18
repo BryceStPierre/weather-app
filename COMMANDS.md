@@ -6,6 +6,10 @@
 
 `heroku addons:attach weather-test-db --app=weather-app-bryce`
 
+`heroku pg:psql --app weather-app-bryce`
+
+`\q`
+
 `git push heroku master`
 
 `heroku ps:scale web=1`
@@ -13,5 +17,3 @@
 `heroku open`
 
 `heroku logs --tail`
-
-`heroku pg:psql --app weather-app-bryce`
