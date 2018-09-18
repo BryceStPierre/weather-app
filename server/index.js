@@ -13,6 +13,15 @@ app.use(bodyParser.json());
 app.use('/api/cities', require('./api/cities'));
 app.use('/api/weather', require('./api/weather'));
 
+if (ENV === 'production') {
+  // Serve static files from the React app.
+  // For any other request, match one above, serve React's index.html file.
+  app.use(express.static(path.join(__dirname, '../client/build')));
+  app.use((req, res) => { 
+    res.sendFile(path.join(__dirname + '/../client/build/index.html')); 
+  });
+}
+
 app.listen(PORT, () => { 
   console.log(`Backend running on port ${PORT}!`); 
 });
